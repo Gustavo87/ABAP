@@ -1,0 +1,20 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+"Este ejemplo muestra el uso de conv para tipos incompletos. Como se puede ver para poder realizar dicha conversión se tuvo que usar un tipo personalizado ty_noemp_numc en el operador CONV, ya que este por defecto funciona solo con tipos de datos completos.
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+    DATA(lv_noemp) = '350668'.
+    TYPES ty_noemp_numc TYPE n LENGTH 8.
+    DATA(lv_noemp_numc) = CONV ty_noemp_numc( lv_noemp ).
+    out->write( lv_noemp_numc ).
+  ENDMETHOD.
+
+ENDCLASS.
