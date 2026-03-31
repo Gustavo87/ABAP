@@ -1,0 +1,24 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+    DATA: lv_text TYPE string value 'LOGALI'.
+    " Explicación de los parámetros: val es el string donde se hara la busqueda, sub la subcadena a busar en ese ese string, case para distinguir mayusculas, occ que ocurrencias vamos a considerar en este caso como el substring es L entonces hay de ocurrencias, nos quedamos con la 2da.
+    " off el desplazamiento, es decir, no empezamos desde la posicion por defecto: cero, sino desde la posicion, en este caso, 2. Len la cantidad de caracteres que vamos a tomar desde el desplazamiento.
+    " en este caso decimos que va a tomar 4, si ponemos un valor que sobrepase, por ejemplo, decir que tome 5 (no hay 5 caracteres desde la posicion 2), se lanza un dump (Exception).
+    DATA(lv_string) = find( val = lv_text sub = 'L' case = abap_true occ =  1 off = 2 len =  4 ).
+    out->write( | El valor es { lv_string } | ).
+  ENDMETHOD.
+
+ENDCLASS.
