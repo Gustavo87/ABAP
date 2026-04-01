@@ -1,0 +1,26 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+
+  SELECT FROM /dmo/airport
+  FIELDS name
+  INTO TABLE @DATA(lb_tab).
+  " Loguea a una variable el contenido de una tabla
+  DATA(lb_tab_string) = concat_lines_of( table = lb_tab sep = '|' ).
+  out->write( lb_tab_string ).
+
+  ENDMETHOD.
+
+ENDCLASS.
