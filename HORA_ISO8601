@@ -1,0 +1,33 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+
+   DATA(hora_sistema) = cl_abap_context_info=>get_system_time( ).
+   out->write( hora_sistema ).
+   out->write( |{ hora_sistema - 1 } | ).
+   out->write( |{ hora_sistema - 3600 } | ).
+
+   DATA(hora_sistema_conv_1) = conv t( ( hora_sistema - 1 ) ).
+   DATA(hora_sistema_conv_2) = conv t( ( hora_sistema - 3600 ) ).
+
+   out->write( hora_sistema_conv_1 ).
+   out->write( hora_sistema_conv_2 ).
+   " En esta impresión en consola le estamos diciendo que imprima la hora en formato ISO 8601, el estandar para representar fechas y horas.
+   out->write( | Son las { hora_sistema_conv_1  TIME = ISO } | ).
+   out->write( | Son las { hora_sistema_conv_2  TIME = ISO } | ).
+
+  ENDMETHOD.
+
+ENDCLASS.
