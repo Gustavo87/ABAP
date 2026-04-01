@@ -1,0 +1,28 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+
+    "STRLEN DIFERENCIA ENTRE TIPO STRING (EL TEXTO ENTRE backticks SE TRATA COMO STRING, EL TEXTO ENTRE COMILLAS SIMPLES SE TRATA COMO CHAR. SI EL TEXTO ES STRING LOS ESPACIOS A LA DERECHA
+    "CUENTA, SINO NO. STRLEN CONSIDERA ESTO, PERO NUMOFCHAR NO.
+    out->write( | STRLEN STRING { strlen( `123  `) } | ).
+    out->write( | STRLEN CHAR { strlen( '123  ') } | ).
+
+    out->write( | NUMOFCHAR STRING { NUMOFCHAR( `123  `) } | ).
+    out->write( | NUMOFCHAR CHAR { NUMOFCHAR( '123  ') } | ).
+
+
+  ENDMETHOD.
+
+ENDCLASS.
