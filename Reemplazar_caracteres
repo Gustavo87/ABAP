@@ -1,0 +1,25 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+    DATA lv_c TYPE c LENGTH 10 VALUE '3308CD3   '.
+    DATA lv_debug TYPE c LENGTH 10.
+    lv_debug = lv_c.
+    "Dado que out->write no muestra los caracteres a la derecha, para saber si una cadena los tiene o no, podemos usar esta alternativa: reemplazar cualquier caracter que no es:
+    "ni letra ni numero, por . 
+    REPLACE ALL OCCURRENCES OF REGEX '[^A-Za-z0-9]' IN lv_debug WITH '.'.
+    out->write( |[{ lv_debug }]| ).
+  ENDMETHOD.
+
+ENDCLASS.
