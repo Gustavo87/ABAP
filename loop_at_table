@@ -1,0 +1,38 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+
+  TYPES: BEGIN OF lty_num,
+         num TYPE i,
+         END OF lty_num.
+
+         DATA: lt_num TYPE TABLE OF lty_num.
+         DATA: lv_sum TYPE i VALUE IS INITIAL, lv_total TYPE i.
+
+         lt_num = VALUE #(
+                            ( num = 10 )
+                            ( num = 20 )
+                            ( num = 30 )
+                         ).
+         " LOOP AT es la estructura comumente usada para iterar sobre tablas internas.
+         LOOP AT lt_num INTO DATA(ls_num).
+            lv_sum += ls_num-num.
+         ENDLOOP.
+
+         out->write( | El valor total de la suma de todos los elementos es: { lv_sum } | ).
+
+  ENDMETHOD.
+
+ENDCLASS.
