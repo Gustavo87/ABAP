@@ -1,0 +1,39 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+
+   DATA: BEGIN OF ls_empleado,
+         BEGIN OF NOMBRES,
+         NOMBRE TYPE STRING VALUE 'GUSTAVO',
+         APELLIDO TYPE STRING VALUE  'BACA',
+         END OF NOMBRES,
+         BEGIN OF DIRECCION,
+         CIUDAD TYPE STRING VALUE 'LEON',
+         BARRIO TYPE STRING VALUE 'LA ARROCERA',
+         PAIS TYPE STRING VALUE 'NICARAGUA',
+         END OF DIRECCION,
+         BEGIN OF POSICION,
+         DEPARTAMENTO TYPE STRING VALUE 'IT',
+         SALARIO TYPE P DECIMALS 2 VALUE 5000,
+         END OF POSICION,
+         END OF ls_empleado.
+
+   out->write( data = ls_empleado  name = 'INFORMACION DEL EMPLEADO').
+
+
+
+  ENDMETHOD.
+
+ENDCLASS.
