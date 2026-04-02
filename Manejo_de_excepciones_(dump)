@@ -20,7 +20,23 @@ CLASS zcl_experimentos IMPLEMENTATION.
         out->write( | No se puede divir entre cero. | ).
     ENDTRY.
 
+   " Atrapar un exepcion desconocida:
+    TRY.
+      DATA(lv_div) = 10 / 0.
+    CATCH CX_ROOT INTO DATA(lx_error).
+      out->write( lx_error->get_text( ) ).
+    ENDTRY.
 
+   " Forma correcta, en este caso, de la mas especifica a la mas generar:
+    TRY.
+      DATA(lv_div) = 10 / 0.
+  CATCH CX_SY_ZERODIVIDE INTO DATA(lx_zero).
+    out->write( | No se puede divir entre cero. | ).
+  CATCH CX_ROOT INTO DATA(lx_all).
+     out->write( lx_error->get_text( ) ).
+  ENDTRY.
+
+  " CX_SY_ZERODIVIDE El prefijo CX = Class eXception, El prefijo SY = System
 
   ENDMETHOD.
 
