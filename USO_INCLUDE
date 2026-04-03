@@ -1,0 +1,59 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+
+    TYPES:BEGIN OF PURCHASE_ORDER_TYPE,
+              ORDER_ID TYPE i,
+              ORDER_DATE TYPE d,
+          END OF PURCHASE_ORDER_TYPE,
+
+          BEGIN OF SUPPLIER_TYPE,
+              SUPPLIER_ID TYPE i,
+              NAME TYPE STRING,
+          END OF SUPPLIER_TYPE,
+
+          BEGIN OF MATERIAL_TYPE,
+            MATERIAL_ID TYPE i,
+            NAME TYPE STRING,
+          END OF MATERIAL_TYPE.
+
+          DATA LS_MAT TYPE MATERIAL_TYPE.
+
+          TYPES BEGIN OF INVOICE_TYPE.
+
+            INCLUDE TYPE PURCHASE_ORDER_TYPE AS PURCHASE.
+            INCLUDE TYPE SUPPLIER_TYPE AS SUPPLIER RENAMING  WITH SUFFIX _SUPPLIER.
+            INCLUDE STRUCTURE LS_MAT AS MAT RENAMING  WITH SUFFIX _MAT.
+          TYPES END OF INVOICE_TYPE.
+          
+          
+          DATA: LS_INVOICE TYPE INVOICE_TYPE,
+                LS_PURCHASE TYPE PURCHASE_ORDER_TYPE.
+
+          LS_PURCHASE = VALUE #( ORDER_DATE = '20260402'  ORDER_ID = 200 ).
+
+          LS_INVOICE = VALUE #( purchase = LS_PURCHASE
+                                supplier-supplier_id = 200
+                                supplier-name = 'XX'
+                                material_id_mat = 220
+                                name_mat = 'WW'
+            ).
+
+            out->write( data = LS_INVOICE name = 'Objeto LS_INVOICE' ).
+
+
+  ENDMETHOD.
+
+ENDCLASS.
