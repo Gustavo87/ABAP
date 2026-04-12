@@ -1,0 +1,104 @@
+CLASS zcl_experimentos DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  interfaces if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_experimentos IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+
+" EJEMPLO DE CURSOR PARALELO
+TYPES: BEGIN OF ty_pedido,
+         pedido TYPE i,
+       END OF ty_pedido.
+
+TYPES: BEGIN OF ty_detalle,
+         pedido TYPE i,
+         item   TYPE c lengtH 1,
+       END OF ty_detalle.
+
+  DATA: lt_pedidos  TYPE STANDARD TABLE OF ty_pedido,
+      lt_detalles TYPE STANDARD TABLE OF ty_detalle.
+
+     lt_pedidos = VALUE #(
+  ( pedido = 100 )
+  ( pedido = 101 )
+  ( pedido = 102 )
+).
+
+lt_detalles = VALUE #(
+  ( pedido = 100 item = 'A' )
+  ( pedido = 100 item = 'B' )
+  ( pedido = 100 item = 'C' )
+  ( pedido = 101 item = 'D' )
+  ( pedido = 101 item = 'E' )
+  ( pedido = 102 item = 'F' )
+).
+
+" PASO 1: ORDENAR AMBAS TABLAS.
+SORT lt_pedidos  BY pedido.
+SORT lt_detalles BY pedido.
+
+LOOP AT lt_pedidos INTO DATA(ls_p).
+  out->write( |Pedido: { ls_p-pedido }| ).
+ENDLOOP.
+
+LOOP AT lt_detalles INTO DATA(ls_d).
+  out->write( |Detalle: { ls_d-pedido } - { ls_d-item }| ).
+ENDLOOP.
+" PASO 2: TENER UNA VARIABLE INDICE PARA LA TABLA INTERNA "GRANDE" (TABLA DETALLE).
+DATA lv_idx TYPE sy-tabix.
+lv_idx = 1.
+" PASO 3: RECORRER LA TABLA PRINCIPAL.
+LOOP AT lt_pedidos INTO DATA(ls_pedido).
+
+  " PASO 4: AVANZAR EL CURSOR HASTA ENCONTRAR
+  " EL PRIMER DETALLE CON PEDIDO IGUAL O MAYOR AL PEDIDO ACTUAL.
+  WHILE lv_idx <= lines( lt_detalles ).
+
+    READ TABLE lt_detalles INTO DATA(ls_detalle) INDEX lv_idx.
+    IF sy-subrc <> 0.
+      EXIT.
+    ENDIF.
+
+    IF ls_detalle-pedido < ls_pedido-pedido.
+      lv_idx = lv_idx + 1.
+    ELSE.
+      EXIT.
+    ENDIF.
+
+  ENDWHILE.
+
+  " PASO 5: CREAR UN INDICE AUXILIAR PARA RECORRER
+  " TODOS LOS DETALLES QUE COINCIDAN CON EL PEDIDO ACTUAL.
+  DATA(lv_idx_aux) = lv_idx.
+
+  " PASO 6: RECORRER TODOS LOS DETALLES COINCIDENTES.
+  WHILE lv_idx_aux <= lines( lt_detalles ).
+
+    READ TABLE lt_detalles INTO ls_detalle INDEX lv_idx_aux.
+    IF sy-subrc <> 0.
+      EXIT.
+    ENDIF.
+
+    IF ls_detalle-pedido = ls_pedido-pedido.
+      out->write( |Coincidencia -> Pedido: { ls_pedido-pedido }, Item: { ls_detalle-item }| ).
+      lv_idx_aux = lv_idx_aux + 1.
+    ELSE.
+      EXIT.
+    ENDIF.
+
+  ENDWHILE.
+
+ endLOOP.
+
+  ENDMETHOD.
+
+ENDCLASS.
